@@ -1,0 +1,153 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| c9                 |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
++--------------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE database decodemtl_addressbook;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> show databases;
++-----------------------+
+| Database              |
++-----------------------+
+| information_schema    |
+| c9                    |
+| decodemtl_addressbook |
+| mysql                 |
+| performance_schema    |
+| phpmyadmin            |
++-----------------------+
+6 rows in set (0.00 sec)
+
+
+mysql> CREATE TABLE Account ( id INT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(255), password VARCHAR(40), createdOn DATETIME, modifiedOn DATETIME);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> describe Account;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| email      | varchar(255) | YES  |     | NULL    |                |
+| password   | varchar(40)  | YES  |     | NULL    |                |
+| createdOn  | datetime     | YES  |     | NULL    |                |
+| modifiedOn | datetime     | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+mysql> CREATE TABLE AddressBook (id INT AUTO_INCREMENT PRIMARY KEY, accountId INT, name VARCHAR(255), createdOn DATETIME, modifiedOn DATETIME);                                   
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> describe AddressBook;
++------------+--------------+------+-----+---------+----------------+
+| Field      | Type         | Null | Key | Default | Extra          |
++------------+--------------+------+-----+---------+----------------+
+| id         | int(11)      | NO   | PRI | NULL    | auto_increment |
+| accountId  | int(11)      | YES  |     | NULL    |                |
+| name       | varchar(255) | YES  |     | NULL    |                |
+| createdOn  | datetime     | YES  |     | NULL    |                |
+| modifiedOn | datetime     | YES  |     | NULL    |                |
++------------+--------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
+
+
+Entry.id is a primary auto-increment key
+Entry.type is an ENUM column permitting phone, address and electronic-mail
+
+
+mysql> CREATE TABLE Entry (
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> addressBookId INT,
+    -> firstName VARCHAR(255),
+    -> lastName VARCHAR(255),
+    -> birthday DATETIME,
+    -> type ENUM('phone', 'address', 'electronic-mail')
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> describe Entry;
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| Field         | Type                                      | Null | Key | Default | Extra          |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+| id            | int(11)                                   | NO   | PRI | NULL    | auto_increment |
+| addressBookId | int(11)                                   | YES  |     | NULL    |                |
+| firstName     | varchar(255)                              | YES  |     | NULL    |                |
+| lastName      | varchar(255)                              | YES  |     | NULL    |                |
+| birthday      | datetime                                  | YES  |     | NULL    |                |
+| type          | enum('phone','address','electronic-mail') | YES  |     | NULL    |                |
++---------------+-------------------------------------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE Address( id INT AUTO_INCREMENT PRIMARY KEY, entryId INT, type ENUM('home', 'work', 'other'), addressLine1 VARCHAR(255), addressLine2 VARCHAR(255), city VARCHAR(255), province VARCHAR(128), country VARCHAR(128), postalCode VARCHAR(10) );                                                              
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> describe Address;
++--------------+-----------------------------+------+-----+---------+----------------+
+| Field        | Type                        | Null | Key | Default | Extra          |
++--------------+-----------------------------+------+-----+---------+----------------+
+| id           | int(11)                     | NO   | PRI | NULL    | auto_increment |
+| entryId      | int(11)                     | YES  |     | NULL    |                |
+| type         | enum('home','work','other') | YES  |     | NULL    |                |
+| addressLine1 | varchar(255)                | YES  |     | NULL    |                |
+| addressLine2 | varchar(255)                | YES  |     | NULL    |                |
+| city         | varchar(255)                | YES  |     | NULL    |                |
+| province     | varchar(128)                | YES  |     | NULL    |                |
+| country      | varchar(128)                | YES  |     | NULL    |                |
+| postalCode   | varchar(10)                 | YES  |     | NULL    |                |
++--------------+-----------------------------+------+-----+---------+----------------+
+9 rows in set (0.01 sec)
+
+
+mysql> CREATE TABLE ElectronicMail(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> entryId INT,
+    -> type ENUM('home', 'work', 'other'),
+    -> content VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+
+mysql> describe ElectronicMail;
++---------+-----------------------------+------+-----+---------+----------------+
+| Field   | Type                        | Null | Key | Default | Extra          |
++---------+-----------------------------+------+-----+---------+----------------+
+| id      | int(11)                     | NO   | PRI | NULL    | auto_increment |
+| entryId | int(11)                     | YES  |     | NULL    |                |
+| type    | enum('home','work','other') | YES  |     | NULL    |                |
+| content | varchar(255)                | YES  |     | NULL    |                |
++---------+-----------------------------+------+-----+---------+----------------+
+4 rows in set (0.01 sec)
+
+
+mysql> CREATE TABLE Phone(
+    -> id INT AUTO_INCREMENT PRIMARY KEY,
+    -> entryId INT,
+    -> type ENUM('home', 'work', 'other'),
+    -> subtype ENUM('landline', 'cellular', 'fax'),
+    -> content VARCHAR(255)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+
+mysql> describe Phone;
++---------+-----------------------------------+------+-----+---------+----------------+
+| Field   | Type                              | Null | Key | Default | Extra          |
++---------+-----------------------------------+------+-----+---------+----------------+
+| id      | int(11)                           | NO   | PRI | NULL    | auto_increment |
+| entryId | int(11)                           | YES  |     | NULL    |                |
+| type    | enum('home','work','other')       | YES  |     | NULL    |                |
+| subtype | enum('landline','cellular','fax') | YES  |     | NULL    |                |
+| content | varchar(255)                      | YES  |     | NULL    |                |
++---------+-----------------------------------+------+-----+---------+----------------+
+5 rows in set (0.00 sec)
