@@ -1,0 +1,5 @@
+Exercise 7:
+List all possible domain name values for ElectronicMail (email@domain.name)
+
+
+mysql> SELECT SUBSTRING_INDEX(content, '@', -1) FROM ElectronicMail;
