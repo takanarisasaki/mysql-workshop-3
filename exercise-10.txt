@@ -1,0 +1,89 @@
+Exercise 10:
+Transform all work emails into home emails and vice versa. BE CAREFUL ;)
+
+mysql> SELECT id, type FROM ElectronicMail;
+
+mysql> SELECT id, type FROM ElectronicMail LIMIT 30;
++----+-------+
+| id | type  |
++----+-------+
+|  1 | home  |
+|  2 | home  |
+|  3 | home  |
+|  4 | home  |
+|  5 | home  |
+|  6 | home  |
+|  7 | home  |
+|  8 | home  |
+|  9 | home  |
+| 10 | home  |
+| 11 | work  |
+| 12 | work  |
+| 13 | work  |
+| 14 | work  |
+| 15 | work  |
+| 16 | work  |
+| 17 | work  |
+| 18 | work  |
+| 19 | work  |
+| 20 | work  |
+| 21 | other |
+| 22 | other |
+| 23 | other |
+| 24 | other |
+| 25 | other |
+| 26 | other |
+| 27 | other |
+| 28 | other |
+| 29 | other |
+| 30 | other |
++----+-------+
+30 rows in set (0.00 sec)
+
+
+mysql> UPDATE ElectronicMail SET type = CASE 
+    -> WHEN type = 'work' THEN 'home' 
+    -> WHEN type = 'home' THEN 'work'
+    -> ELSE 'other'
+    -> END;
+    
+Query OK, 1610 rows affected (0.02 sec)
+Rows matched: 2300  Changed: 1610  Warnings: 0
+
+
+mysql> SELECT id, type FROM ElectronicMail LIMIT 30;
++----+-------+
+| id | type  |
++----+-------+
+|  1 | work  |
+|  2 | work  |
+|  3 | work  |
+|  4 | work  |
+|  5 | work  |
+|  6 | work  |
+|  7 | work  |
+|  8 | work  |
+|  9 | work  |
+| 10 | work  |
+| 11 | home  |
+| 12 | home  |
+| 13 | home  |
+| 14 | home  |
+| 15 | home  |
+| 16 | home  |
+| 17 | home  |
+| 18 | home  |
+| 19 | home  |
+| 20 | home  |
+| 21 | other |
+| 22 | other |
+| 23 | other |
+| 24 | other |
+| 25 | other |
+| 26 | other |
+| 27 | other |
+| 28 | other |
+| 29 | other |
+| 30 | other |
++----+-------+
+30 rows in set (0.00 sec)
